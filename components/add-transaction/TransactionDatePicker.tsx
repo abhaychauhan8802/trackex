@@ -1,10 +1,15 @@
+import { Colors } from "@/constants/Colors";
+import { formatDateString } from "@/utils/formatDate";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
-import { Button } from "react-native";
+import { Image, View } from "react-native";
+import Card from "../ui/Card";
+import RoundIcon from "../ui/RoundIcon";
 import { ThemedText } from "../ui/ThemedText";
 
 const TransactionDatePicker = ({ theme }: { theme: "light" | "dark" }) => {
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
@@ -23,15 +28,35 @@ const TransactionDatePicker = ({ theme }: { theme: "light" | "dark" }) => {
     showMode("date");
   };
 
-  const showTimepicker = () => {
-    showMode("time");
-  };
-
   return (
     <>
-      <Button onPress={showDatepicker} title="Show date picker!" />
-      <Button onPress={showTimepicker} title="Show time picker!" />
-      <ThemedText>selected: {date.toLocaleString()}</ThemedText>
+      <Card
+        onPress={() => showDatepicker()}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginTop: 10,
+        }}
+      >
+        <View style={{ flexDirection: "row", alignItems: "center", gap: 14 }}>
+          <RoundIcon>
+            <Image
+              source={require("@/assets/icons/calendar.png")}
+              style={{ width: 20, height: 20 }}
+              tintColor={Colors[theme].icon}
+            />
+          </RoundIcon>
+          <ThemedText type="body" weight="semibold">
+            {formatDateString(date.toISOString())}
+          </ThemedText>
+        </View>
+        <MaterialIcons
+          name="keyboard-arrow-right"
+          size={22}
+          color={Colors[theme].icon}
+        />
+      </Card>
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
@@ -39,6 +64,7 @@ const TransactionDatePicker = ({ theme }: { theme: "light" | "dark" }) => {
           mode={mode as any}
           is24Hour={true}
           onChange={onChange}
+          maximumDate={new Date()}
         />
       )}
     </>

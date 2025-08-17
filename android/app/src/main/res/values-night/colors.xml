@@ -1,3 +1,7 @@
 <resources>
+  <color name="datePicker_colorAccent">#9b74f6</color>
+  <color name="datePicker_windowBackground">#0F172A</color>
+  <color name="datePicker_textColorPrimary">#f1f5f9</color>
+  <color name="datePicker_textColorSecondary">#cdd5df</color>
   <color name="splashscreen_background">#0F172A</color>
 </resources>

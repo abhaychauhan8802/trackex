@@ -3,6 +3,13 @@
     <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="android:statusBarColor">#f9fafb</item>
+    <item name="android:datePickerDialogTheme">@style/DatePickerDialogTheme</item>
+  </style>
+  <style name="DatePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    <item name="colorAccent">@color/datePicker_colorAccent</item>
+    <item name="android:windowBackground">@color/datePicker_windowBackground</item>
+    <item name="android:textColorPrimary">@color/datePicker_textColorPrimary</item>
+    <item name="android:textColorSecondary">@color/datePicker_textColorSecondary</item>
   </style>
   <style name="Theme.App.SplashScreen" parent="Theme.SplashScreen">
     <item name="windowSplashScreenBackground">@color/splashscreen_background</item>

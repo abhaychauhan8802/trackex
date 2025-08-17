@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, useColorScheme } from "react-native";
 
 const Loader = () => {
   const theme = useColorScheme() ?? "light";
-  return <ActivityIndicator size={30} color={Colors[theme].primary} />;
+  return <ActivityIndicator size={45} color={Colors[theme].primary} />;
 };
 
 export default Loader;

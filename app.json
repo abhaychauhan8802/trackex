@@ -54,11 +54,19 @@
             "datePicker": {
               "colorAccent": {
                 "light": "#8b5cf6",
-                "dark": "#9b74f6ff"
+                "dark": "#9b74f6"
               },
               "windowBackground": {
                 "light": "#f9fafb",
                 "dark": "#0F172A"
+              },
+              "textColorPrimary": {
+                "light": "#161d2c",
+                "dark": "#f1f5f9"
+              },
+              "textColorSecondary": {
+                "light": "#818fa4",
+                "dark": "#cdd5df"
               }
             }
           },

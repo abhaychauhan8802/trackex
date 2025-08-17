@@ -20,6 +20,7 @@ import Button from "@/components/ui/Button";
 import TabsSwitcher from "@/components/ui/TabsSwitcher";
 import axios from "@/config/axios";
 import { Colors } from "@/constants/Colors";
+import { getCategories } from "@/utils/categoryService";
 import { formatDate } from "@/utils/formatDate";
 import BottomSheetButtons from "../../components/add-transaction/BottomSheetButtons";
 import TransactionInputSection from "../../components/add-transaction/TransactionInputSection";
@@ -101,15 +102,8 @@ const AddTransaction = () => {
   // -----------------------------
   // Functions
   // -----------------------------
-  const fetchCategories = async () => {
-    try {
-      const res = await axios.get("/category");
-      if (res?.data?.success) setCategories(res.data.categories);
-    } catch (error: AxiosError | any) {
-      console.log(error?.response?.data);
-    }
-  };
 
+  // Add transaction function
   const handleAddTransaction = async () => {
     const { amount, category, note } = formData;
 
@@ -141,6 +135,7 @@ const AddTransaction = () => {
     }
   };
 
+  // Bottom sheet functions
   const handleSnapPress = useCallback((index: number) => {
     sheetRef.current?.snapToIndex(index);
   }, []);
@@ -191,16 +186,24 @@ const AddTransaction = () => {
 
   // fetch categories
   useEffect(() => {
-    if (!categories) fetchCategories();
+    (async () => {
+      const cats = await getCategories();
+      setCategories(cats);
+    })();
   }, []);
 
   // set default category
   useEffect(() => {
+    const cat =
+      selectedTab === "expense"
+        ? categories?.expenseCategories[0]?.id
+        : categories?.incomeCategories[0]?.id;
+
     dispatch({
       type: "SET_CATEGORY",
-      payload: selectedTab === "expense" ? 6 : 1,
+      payload: cat,
     });
-  }, [selectedTab]);
+  }, [categories, selectedTab]);
 
   // handle android back press to close bottom sheet
   useEffect(() => {

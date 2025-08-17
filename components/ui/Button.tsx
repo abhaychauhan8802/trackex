@@ -40,12 +40,10 @@ const Button = ({
       backgroundColor: Colors[theme].primary,
     },
     secondary: {
-      backgroundColor: "#E5E5EA",
-      color: "#FFF",
+      backgroundColor: Colors[theme].secondary,
     },
     ghost: {
       backgroundColor: "transparent",
-      color: "#FFF",
     },
   }[type];
 
@@ -54,10 +52,10 @@ const Button = ({
       color: Colors[theme].onPrimary,
     },
     secondary: {
-      color: "#FFF",
+      color: Colors[theme].onSecondary,
     },
     ghost: {
-      color: "#FFF",
+      color: Colors[theme].textPrimary,
     },
   }[type];
 
