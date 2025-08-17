@@ -9,13 +9,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RelativePathString, router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import React from "react";
-import {
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
+import { Image, StyleSheet, useColorScheme, View } from "react-native";
 
 type ScreenDataType = {
   name: string;
@@ -59,29 +53,24 @@ const Profile = () => {
 
       <View style={styles.container}>
         {screensData.map((item) => (
-          <TouchableOpacity
+          <Card
             key={item.name}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
             onPress={() => router.push(item.route as RelativePathString)}
           >
-            <Card>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <ThemedText type="subTitle" weight="semibold">
-                  {item.name}
-                </ThemedText>
-                <MaterialIcons
-                  name="arrow-forward-ios"
-                  size={15}
-                  color={Colors[theme].textPrimary}
-                />
-              </View>
-            </Card>
-          </TouchableOpacity>
+            <ThemedText type="subTitle" weight="semibold">
+              {item.name}
+            </ThemedText>
+            <MaterialIcons
+              name="arrow-forward-ios"
+              size={15}
+              color={Colors[theme].textPrimary}
+            />
+          </Card>
         ))}
         <Button onPress={handleLogout} text="Logout" />
       </View>

@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Constants } from "@/constants/Constants";
+import { formatINR } from "@/utils/formatAmount";
 import { StyleSheet, View } from "react-native";
 
 type Props = {
@@ -15,7 +16,7 @@ export default function BalanceCard({ title, value, color }: Props) {
         {title}
       </ThemedText>
       <ThemedText type="subTitle" color="onPrimary" weight="bold">
-        ₹{value}
+        {formatINR(Number(value))}
       </ThemedText>
     </View>
   );

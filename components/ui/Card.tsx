@@ -4,6 +4,7 @@ import React from "react";
 import {
   StyleProp,
   StyleSheet,
+  TouchableOpacity,
   useColorScheme,
   View,
   ViewStyle,
@@ -13,23 +14,41 @@ const Card = ({
   children,
   backgroundColor,
   style,
+  onPress,
 }: {
   children: React.ReactNode;
   backgroundColor?: string;
   style?: StyleProp<ViewStyle>;
+  onPress?: () => void;
 }) => {
   const theme = useColorScheme() ?? "light";
 
   return (
-    <View
-      style={[
-        styles.card,
-        { backgroundColor: backgroundColor ?? Colors[theme].surface },
-        style,
-      ]}
-    >
-      {children}
-    </View>
+    <>
+      {onPress ? (
+        <TouchableOpacity
+          activeOpacity={Constants.activeOpacity}
+          style={[
+            styles.card,
+            { backgroundColor: backgroundColor ?? Colors[theme].surface },
+            style,
+          ]}
+          onPress={onPress}
+        >
+          {children}
+        </TouchableOpacity>
+      ) : (
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: backgroundColor ?? Colors[theme].surface },
+            style,
+          ]}
+        >
+          {children}
+        </View>
+      )}
+    </>
   );
 };
 

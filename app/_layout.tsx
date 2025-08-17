@@ -10,6 +10,7 @@ import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useColorScheme, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { Provider } from "react-redux";
 
@@ -30,11 +31,13 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <View style={{ flex: 1, backgroundColor: color }}>
-          <Slot />
-          <StatusBar style="auto" />
-          <Toast config={toastConfig} />
-        </View>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor: color }}>
+            <Slot />
+            <StatusBar style="auto" />
+            <Toast config={toastConfig} />
+          </View>
+        </GestureHandlerRootView>
       </ThemeProvider>
     </Provider>
   );

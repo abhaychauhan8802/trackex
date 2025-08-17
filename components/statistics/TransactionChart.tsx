@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { formatINR } from "@/utils/formatAmount";
 import { useColorScheme, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
 import { ThemedText } from "../ui/ThemedText";
@@ -8,6 +9,7 @@ export type ChartData = {
   value: number;
   color: string;
   text: string;
+  focused?: boolean;
 };
 
 const TransactionChart = ({
@@ -25,10 +27,13 @@ const TransactionChart = ({
     <PieChart
       data={chartData}
       donut
-      radius={120}
-      innerRadius={70}
+      radius={130}
+      innerRadius={80}
+      strokeColor={Colors[theme].background}
+      strokeWidth={4}
+      sectionAutoFocus
       showText
-      textColor={Colors[theme].onSecondary}
+      textColor={Colors[theme].onPrimary}
       innerCircleColor={Colors[theme].background}
       centerLabelComponent={() => {
         return (
@@ -39,7 +44,7 @@ const TransactionChart = ({
               </ThemedText>
             )}
             <ThemedText weight="bold" type="subTitle">
-              ₹{total}
+              {formatINR(Number(total))}
             </ThemedText>
           </View>
         );

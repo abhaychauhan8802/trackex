@@ -62,7 +62,12 @@ const Button = ({
   }[type];
 
   return (
-    <TouchableOpacity onPress={onPress} {...props} disabled={disabled}>
+    <TouchableOpacity
+      onPress={onPress}
+      {...props}
+      disabled={disabled}
+      activeOpacity={Constants.activeOpacity}
+    >
       <ThemedView
         style={[
           {

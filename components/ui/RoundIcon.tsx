@@ -17,7 +17,7 @@ const RoundIcon = ({
         {
           padding: 14,
           backgroundColor: Colors[theme].background,
-          borderRadius: 50,
+          borderRadius: 14,
         },
         style,
       ]}

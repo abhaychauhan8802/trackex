@@ -63,11 +63,11 @@ const fontWeightMap = {
 const useStyle = () =>
   StyleSheet.create({
     headline: { fontSize: 32 },
+    sectionHeading: {
+      fontSize: 20,
+    },
     title: { fontSize: 26 },
     subTitle: { fontSize: 18 },
-    sectionHeading: {
-      fontSize: 22,
-    },
     body: { fontSize: 16 },
     bodySmall: { fontSize: 14 },
     label: { fontSize: 14 },

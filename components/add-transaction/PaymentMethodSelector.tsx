@@ -2,14 +2,9 @@ import Card from "@/components/ui/Card";
 import RoundIcon from "@/components/ui/RoundIcon";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Colors } from "@/constants/Colors";
-import {
-  FlatList,
-  Image,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useCallback } from "react";
+import { Image, useColorScheme } from "react-native";
+import BottomSheetList from "../BottomSheetList";
 
 const paymentMethods = [
   {
@@ -25,65 +20,46 @@ const paymentMethods = [
 ];
 
 const PaymentMethodSelector = ({
-  paymentMethod,
   setPaymentMethod,
-  setVisible,
+  handleClosePress,
 }: {
-  paymentMethod: "cash" | "bank";
   setPaymentMethod: (paymentMethod: "cash" | "bank") => void;
-  setVisible: (visible: boolean) => void;
+  handleClosePress: () => void;
 }) => {
   const theme = useColorScheme() ?? "light";
-  const insets = useSafeAreaInsets();
+
+  const renderItem = useCallback(
+    ({ item }: { item: any }) => (
+      <Card
+        backgroundColor={Colors[theme].surface}
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          gap: 12,
+          marginBottom: 6,
+        }}
+        onPress={() => {
+          setPaymentMethod(item.name.toLowerCase() as "cash" | "bank");
+          handleClosePress();
+        }}
+      >
+        <RoundIcon style={{ backgroundColor: Colors[theme].background }}>
+          <Image
+            source={item.icon}
+            style={{ width: 20, height: 20 }}
+            tintColor={Colors[theme].icon}
+          />
+        </RoundIcon>
+        <ThemedText type="body" weight="semibold">
+          {item.name}
+        </ThemedText>
+      </Card>
+    ),
+    [theme, setPaymentMethod, handleClosePress]
+  );
 
   return (
-    <View style={{ flex: 1, paddingHorizontal: 16, gap: 10 }}>
-      <ThemedText
-        type="label"
-        weight="semibold"
-        style={{ paddingTop: 16, paddingBottom: 5 }}
-      >
-        Select Payment Method
-      </ThemedText>
-
-      <FlatList
-        data={paymentMethods}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={{ paddingBottom: insets.bottom }}
-        keyboardShouldPersistTaps="handled"
-        renderItem={({ item }) => (
-          <Card
-            backgroundColor={Colors[theme].surface}
-            style={{ marginBottom: 6 }}
-          >
-            <TouchableOpacity
-              key={item.id}
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 12,
-              }}
-              activeOpacity={0.6}
-              onPress={() => {
-                setPaymentMethod(item.name.toLowerCase() as "cash" | "bank");
-                setVisible(false);
-              }}
-            >
-              <RoundIcon style={{ backgroundColor: Colors[theme].background }}>
-                <Image
-                  source={item.icon}
-                  style={{ width: 20, height: 20 }}
-                  tintColor={Colors[theme].icon}
-                />
-              </RoundIcon>
-              <ThemedText type="body" weight="semibold">
-                {item.name}
-              </ThemedText>
-            </TouchableOpacity>
-          </Card>
-        )}
-      />
-    </View>
+    <BottomSheetList data={paymentMethods ?? []} renderItem={renderItem} />
   );
 };
 

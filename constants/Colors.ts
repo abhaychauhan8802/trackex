@@ -20,7 +20,7 @@ export const Colors = {
     background: "#0F172A",
     surface: "#1E293B",
     // primary: "#34D399",
-    primary: "#8b5cf6",
+    primary: "#9b74f6ff",
     primaryFade: "#8b5cf69a",
     onPrimary: "#FFFFFF",
     secondary: "#7d899aff",

@@ -1,7 +1,10 @@
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
+import { expenseCategories, incomeCategories } from "@/utils/category";
+import { formatINR } from "@/utils/formatAmount";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import Card from "../ui/Card";
+import RoundIcon from "../ui/RoundIcon";
 import { ThemedText } from "../ui/ThemedText";
 import { ChartData } from "./TransactionChart";
 
@@ -12,10 +15,13 @@ const CategoryTotalCard = ({
   categoryTotal: ChartData[];
   selectedTab: "expense" | "income";
 }) => {
+  const categoryImage =
+    selectedTab === "income" ? incomeCategories : expenseCategories;
+
   return (
     <View style={styles.cardContainer}>
       <ThemedText
-        weight="bold"
+        weight="semibold"
         type="sectionHeading"
         style={{ marginBottom: 10 }}
       >
@@ -24,40 +30,38 @@ const CategoryTotalCard = ({
       <View style={{ gap: 10 }}>
         {categoryTotal.map((item, idx) => {
           return (
-            <Card key={idx}>
+            <Card
+              key={idx}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <View
                 style={{
                   flexDirection: "row",
-                  justifyContent: "space-between",
                   alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
                 }}
               >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 8,
-                  }}
-                >
-                  <View
-                    style={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: 50,
-                      backgroundColor: item.color,
-                    }}
+                <RoundIcon>
+                  <Image
+                    source={categoryImage?.[item.label]?.icon}
+                    style={{ width: 20, height: 20 }}
+                    tintColor={item.color}
                   />
-                  <ThemedText weight="semibold" type="subTitle">
-                    {capitalizeFirstLetter(item.label)}
-                  </ThemedText>
-                </View>
-                <ThemedText
-                  color={selectedTab === "expense" ? "error" : "success"}
-                >{`${selectedTab === "expense" ? "- " : "+ "}₹${
-                  item.value
-                }`}</ThemedText>
+                </RoundIcon>
+                <ThemedText weight="semibold" type="subTitle">
+                  {capitalizeFirstLetter(item.label)}
+                </ThemedText>
               </View>
+              <ThemedText
+                color={selectedTab === "expense" ? "error" : "success"}
+              >{`${selectedTab === "expense" ? "- " : "+ "}${formatINR(
+                Number(item.value)
+              )}`}</ThemedText>
             </Card>
           );
         })}

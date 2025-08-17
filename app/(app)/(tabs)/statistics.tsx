@@ -2,6 +2,7 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import CategoryTotalCard from "@/components/statistics/CategoryTotalCard";
 import TransactionChart from "@/components/statistics/TransactionChart";
 import Dropdown from "@/components/ui/Dropdown";
+import Loader from "@/components/ui/Loader";
 import TabsSwitcher from "@/components/ui/TabsSwitcher";
 import { ThemedText } from "@/components/ui/ThemedText";
 import axios from "@/config/axios";
@@ -9,7 +10,7 @@ import { pieChartColors } from "@/constants/ChartColors";
 import { timePeriod } from "@/utils/timePeriod";
 import { AxiosError } from "axios";
 import React, { useEffect, useMemo, useState } from "react";
-import { useColorScheme, View } from "react-native";
+import { View } from "react-native";
 import Toast from "react-native-toast-message";
 
 const dates = [
@@ -30,7 +31,7 @@ type CategoryTotalType = {
 
 const Statistics = () => {
   const { currentWeek, currentMonth, currentYear } = timePeriod;
-  const theme = useColorScheme() ?? "light";
+  // const theme = useColorScheme() ?? "light";
 
   const [categoryTotal, setCategoryTotal] = useState<CategoryTotalType>({
     expense: [],
@@ -52,7 +53,15 @@ const Statistics = () => {
   }, [categoryTotal, selectedTab, selected]);
 
   const chartData = useMemo(() => {
-    return categoryTotal[selectedTab].map((item, idx) => {
+    const currentData = categoryTotal[selectedTab];
+
+    const maxIndex = currentData.reduce(
+      (maxIdx, item, idx, arr) =>
+        Number(item.total) > Number(arr[maxIdx].total) ? idx : maxIdx,
+      0
+    );
+
+    return currentData.map((item, idx) => {
       const percantage = Math.round((Number(item.total) / total) * 100);
 
       return {
@@ -60,6 +69,7 @@ const Statistics = () => {
         value: Number(item.total),
         text: percantage + "%",
         color: pieChartColors[idx],
+        focused: idx === maxIndex,
       };
     });
   }, [categoryTotal, selectedTab]);
@@ -92,7 +102,7 @@ const Statistics = () => {
 
   useEffect(() => {
     fetchCategoryTotal();
-  }, [selectedTimePeriod]);
+  }, [selectedTimePeriod, selectedTab]);
 
   useEffect(() => {
     const mapping: Record<string, any> = {
@@ -118,7 +128,13 @@ const Statistics = () => {
         value={selected}
         onChange={(val) => setSelected(val)}
       />
-      {categoryTotal[selectedTab].length > 0 ? (
+      {loading ? (
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Loader />
+        </View>
+      ) : categoryTotal[selectedTab].length > 0 ? (
         <>
           <View style={{ alignItems: "center", marginTop: 50 }}>
             <TransactionChart

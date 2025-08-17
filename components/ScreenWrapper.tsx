@@ -22,7 +22,7 @@ type ScreenWrapperProps = {
 const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   headerTitle,
   children,
-  edges,
+  edges = ["top"],
   headerTitleStyle,
   headerStyle,
   headerShowBackButton,

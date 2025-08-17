@@ -17,7 +17,7 @@ const incomeCategories: { [key: string]: { icon: any } } = {
 };
 
 const expenseCategories: { [key: string]: { icon: any } } = {
-  "other income": {
+  "other expenses": {
     icon: require("../assets/icons/other.png"),
   },
   food: {

@@ -1,6 +1,7 @@
 import BalanceCard from "@/components/BalanceCard";
 import TransactionsSection from "@/components/home/TransactionsSection";
 import ScreenWrapper from "@/components/ScreenWrapper";
+import Loader from "@/components/ui/Loader";
 import TabsSwitcher from "@/components/ui/TabsSwitcher";
 import { ThemedText } from "@/components/ui/ThemedText";
 import axios from "@/config/axios";
@@ -8,12 +9,7 @@ import { Colors } from "@/constants/Colors";
 import { timePeriod } from "@/utils/timePeriod";
 import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  useColorScheme,
-  View,
-} from "react-native";
+import { StyleSheet, useColorScheme, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 const Transactions = () => {
@@ -79,7 +75,7 @@ const Transactions = () => {
             alignItems: "center",
           }}
         >
-          <ActivityIndicator size={30} color={Colors[theme].primary} />
+          <Loader />
         </View>
       ) : (
         <>

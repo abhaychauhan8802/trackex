@@ -1,4 +1,5 @@
 import { Colors } from "@/constants/Colors";
+import { formatINR } from "@/utils/formatAmount";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
@@ -18,9 +19,9 @@ export default function DebitCard({
 
   return (
     <LinearGradient
-      colors={["#8B5CF6", "#EC4899", "#F97316"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
+      colors={["#A671FC", "#9DA1FB", "#B0B6FD", "#8fd6ffff"]}
+      start={{ x: 0, y: 1 }}
+      end={{ x: 1, y: 0 }}
       style={styles.card}
     >
       <View>
@@ -35,7 +36,7 @@ export default function DebitCard({
 
         {/* Balance Amount */}
         <ThemedText type="headline" weight="bold" color="onPrimary">
-          ₹{remaining}
+          {formatINR(Number(remaining))}
         </ThemedText>
       </View>
 
@@ -47,7 +48,7 @@ export default function DebitCard({
               <AntDesign
                 name="arrowdown"
                 size={16}
-                color={Colors[theme].success}
+                color={Colors[theme].onPrimary}
               />
             </View>
             <ThemedText type="label" weight="semibold" color="onPrimary">
@@ -61,7 +62,7 @@ export default function DebitCard({
               style={styles.amount}
               color="onPrimary"
             >
-              ₹{totalIncome}
+              {formatINR(Number(totalIncome))}
             </ThemedText>
           </View>
         </View>
@@ -69,7 +70,11 @@ export default function DebitCard({
         <View style={styles.statItem}>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <View style={styles.statIconContainer}>
-              <AntDesign name="arrowup" size={16} color="#ff0000ff" />
+              <AntDesign
+                name="arrowup"
+                size={16}
+                color={Colors[theme].onPrimary}
+              />
             </View>
             <ThemedText type="label" weight="semibold" color="onPrimary">
               Expenses
@@ -82,7 +87,7 @@ export default function DebitCard({
               style={styles.amount}
               color="onPrimary"
             >
-              ₹{totalExpense}
+              {formatINR(Number(totalExpense))}
             </ThemedText>
           </View>
         </View>
@@ -95,7 +100,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 16,
     padding: 20,
-    marginTop: 10,
     minHeight: 180,
     justifyContent: "space-between",
   },

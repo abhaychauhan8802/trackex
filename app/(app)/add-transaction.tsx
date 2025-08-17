@@ -1,31 +1,34 @@
-import CustomHeader from "@/components/CustomHeader";
-import BottomSheet from "@/components/ui/BottomSheet";
-import Button from "@/components/ui/Button";
-import ThemedSafeAreaView from "@/components/ui/ThemedSafeAreaView";
-
-import CategorySelector from "../../components/add-transaction/CategorySelector";
-import TransactionDetailsList from "../../components/add-transaction/TransactionDetailsList";
-import TransactionInputSection from "../../components/add-transaction/TransactionInputSection";
-
-import PaymentMethodSelector from "@/components/add-transaction/PaymentMethodSelector";
-import TabsSwitcher from "@/components/ui/TabsSwitcher";
-import axios from "@/config/axios";
-import { formatDate } from "@/utils/formatDate";
+import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { AxiosError } from "axios";
 import { router } from "expo-router";
-import { useEffect, useMemo, useReducer, useState } from "react";
 import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
+import { BackHandler, Keyboard, useColorScheme } from "react-native";
 import Toast from "react-native-toast-message";
+
+import CategorySelector from "@/components/add-transaction/CategorySelector";
+import PaymentMethodSelector from "@/components/add-transaction/PaymentMethodSelector";
+import TransactionDatePicker from "@/components/add-transaction/TransactionDatePicker";
+import ScreenWrapper from "@/components/ScreenWrapper";
+import Button from "@/components/ui/Button";
+import TabsSwitcher from "@/components/ui/TabsSwitcher";
+import axios from "@/config/axios";
+import { Colors } from "@/constants/Colors";
+import { formatDate } from "@/utils/formatDate";
+import BottomSheetButtons from "../../components/add-transaction/BottomSheetButtons";
+import TransactionInputSection from "../../components/add-transaction/TransactionInputSection";
 
 let today = formatDate(new Date());
 
+// -----------------------------
+// Types
+// -----------------------------
 type TransactionFormState = {
   amount: string;
   category: number | null;
@@ -42,11 +45,14 @@ type TransactionFormAction =
   | { type: "SET_PAYMENT_METHOD"; payload: string }
   | { type: "RESET_FORM" };
 
+// -----------------------------
+// Initial State & Reducer
+// -----------------------------
 const initialState: TransactionFormState = {
   amount: "",
   note: "",
   category: null,
-  paymentMethod: "cash" as "cash" | "bank",
+  paymentMethod: "cash",
   date: today,
 };
 
@@ -69,19 +75,32 @@ function reducer(state: TransactionFormState, action: TransactionFormAction) {
   }
 }
 
+// -----------------------------
+// Component
+// -----------------------------
 const AddTransaction = () => {
+  // State
+  const [formData, dispatch] = useReducer(reducer, initialState);
   const [selectedTab, setSelectedTab] = useState<"income" | "expense">(
     "expense"
   );
-  const [visible, setVisible] = useState<boolean>(false);
   const [categories, setCategories] = useState<any>();
+  const [isAdding, setIsAdding] = useState(false);
+
+  // Bottom sheet state
+  const sheetRef = useRef<BottomSheet>(null);
+  const snapPoints = useMemo(() => ["50%"], []);
   const [bottomSheetType, setBottomSheetType] = useState<
     "category" | "payment" | null
   >(null);
-  const [isAdding, setIsAdding] = useState(false);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
-  const [formData, dispatch] = useReducer(reducer, initialState);
+  // Theme
+  const theme = useColorScheme() ?? "light";
 
+  // -----------------------------
+  // Functions
+  // -----------------------------
   const fetchCategories = async () => {
     try {
       const res = await axios.get("/category");
@@ -102,6 +121,7 @@ const AddTransaction = () => {
     if (!note) return showError("Note is required");
 
     setIsAdding(true);
+
     try {
       const res = await axios.post("/transaction/add", {
         ...formData,
@@ -109,26 +129,48 @@ const AddTransaction = () => {
       });
 
       if (res?.data?.success) {
-        Toast.show({
-          type: "success",
-          text1: res?.data?.message,
-        });
+        Toast.show({ type: "success", text1: res?.data?.message });
         dispatch({ type: "RESET_FORM" });
-
         router.replace("/(app)/(tabs)");
       }
     } catch (error: AxiosError | any) {
-      Toast.show({
-        type: "error",
-        text1: error?.response?.data?.message,
-      });
-
+      Toast.show({ type: "error", text1: error?.response?.data?.message });
       console.log(error?.response?.data);
     } finally {
       setIsAdding(false);
     }
   };
 
+  const handleSnapPress = useCallback((index: number) => {
+    sheetRef.current?.snapToIndex(index);
+  }, []);
+
+  const handleClosePress = useCallback(() => {
+    sheetRef.current?.close();
+  }, []);
+
+  const handleSheetChange = useCallback((index: number) => {
+    setIsSheetOpen(index >= 0);
+  }, []);
+
+  const renderBackdrop = useCallback(
+    (props: any) => (
+      <BottomSheetBackdrop
+        {...props}
+        appearsOnIndex={0}
+        disappearsOnIndex={-1}
+        pressBehavior="close"
+        style={[props.style, { top: 0, height: "100%" }]}
+      />
+    ),
+    []
+  );
+
+  // -----------------------------
+  // Derived Values
+  // -----------------------------
+
+  // selected category
   const selectedCategoryName = useMemo(() => {
     if (!categories || formData.category == null) return "";
 
@@ -143,12 +185,16 @@ const AddTransaction = () => {
     return selected?.name ?? "";
   }, [categories, formData.category, selectedTab]);
 
+  // -----------------------------
+  // Effects
+  // -----------------------------
+
+  // fetch categories
   useEffect(() => {
-    if (!categories) {
-      fetchCategories();
-    }
+    if (!categories) fetchCategories();
   }, []);
 
+  // set default category
   useEffect(() => {
     dispatch({
       type: "SET_CATEGORY",
@@ -156,94 +202,107 @@ const AddTransaction = () => {
     });
   }, [selectedTab]);
 
+  // handle android back press to close bottom sheet
+  useEffect(() => {
+    const backAction = () => {
+      if (isSheetOpen) {
+        sheetRef.current?.close();
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, [isSheetOpen]);
+
+  // -----------------------------
+  // Render
+  // -----------------------------
   return (
-    <ThemedSafeAreaView>
-      <CustomHeader title="Add Transaction" showBack />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
+    <>
+      <ScreenWrapper
+        headerTitle="Add Transaction"
+        edges={["bottom", "top"]}
+        headerShowBackButton
       >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <ScrollView
-            contentContainerStyle={{ flexGrow: 1 }}
-            keyboardShouldPersistTaps="handled"
-          >
-            <View
-              style={{ paddingHorizontal: 16, paddingVertical: 10, flex: 1 }}
-            >
-              <TabsSwitcher
-                options={[
-                  { key: "expense", label: "Expense" },
-                  { key: "income", label: "Income" },
-                ]}
-                selected={selectedTab}
-                onChange={setSelectedTab}
-              />
+        <TabsSwitcher
+          options={[
+            { key: "expense", label: "Expense" },
+            { key: "income", label: "Income" },
+          ]}
+          selected={selectedTab}
+          onChange={setSelectedTab}
+        />
 
-              <TransactionInputSection
-                amount={formData.amount}
-                note={formData.note}
-                onAmountChange={(amount) =>
-                  dispatch({ type: "SET_AMOUNT", payload: amount })
-                }
-                onNoteChange={(note) =>
-                  dispatch({ type: "SET_NOTE", payload: note })
-                }
-              />
-              <TransactionDetailsList
-                onOpen={(type) => {
-                  setBottomSheetType(type);
-                  setVisible(true);
-                }}
-                category={selectedCategoryName}
-                paymentMethod={formData.paymentMethod}
-                date={formData.date}
-                setDate={(date) =>
-                  dispatch({ type: "SET_DATE", payload: date })
-                }
-              />
-              <Button
-                text="Add Transaction"
-                style={{ marginTop: 12 }}
-                loading={isAdding}
-                disabled={isAdding}
-                onPress={handleAddTransaction}
-              />
-            </View>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+        <TransactionInputSection
+          amount={formData.amount}
+          note={formData.note}
+          onAmountChange={(amount) =>
+            dispatch({ type: "SET_AMOUNT", payload: amount })
+          }
+          onNoteChange={(note) => dispatch({ type: "SET_NOTE", payload: note })}
+        />
 
+        <BottomSheetButtons
+          onOpen={(type, idx) => {
+            Keyboard.dismiss();
+            setBottomSheetType(type);
+            handleSnapPress(idx as number);
+          }}
+          selectedTab={selectedTab}
+          category={selectedCategoryName}
+          paymentMethod={formData.paymentMethod}
+        />
+
+        <TransactionDatePicker theme={theme} />
+
+        <Button
+          text="Add Transaction"
+          style={{ marginTop: 12 }}
+          loading={isAdding}
+          disabled={isAdding}
+          onPress={handleAddTransaction}
+        />
+      </ScreenWrapper>
+
+      {/* Bottom Sheet */}
       <BottomSheet
-        visible={visible}
-        onClose={() => {
-          setVisible(false);
-          setBottomSheetType(null);
-        }}
-        height={500}
+        ref={sheetRef}
+        index={-1}
+        enableOverDrag={false}
+        snapPoints={snapPoints}
+        enableDynamicSizing={false}
+        enablePanDownToClose
+        backdropComponent={renderBackdrop}
+        onChange={handleSheetChange}
+        backgroundStyle={{ backgroundColor: Colors[theme].background }}
+        handleIndicatorStyle={{ backgroundColor: Colors[theme].textSecondary }}
       >
         {bottomSheetType === "category" && (
           <CategorySelector
             selectedTab={selectedTab}
             categories={categories}
-            category={formData.category}
             setCategory={(category) =>
               dispatch({ type: "SET_CATEGORY", payload: category })
             }
-            setVisible={setVisible}
+            handleClosePress={handleClosePress}
           />
         )}
         {bottomSheetType === "payment" && (
           <PaymentMethodSelector
-            paymentMethod={formData.paymentMethod}
             setPaymentMethod={(paymentMethod) =>
               dispatch({ type: "SET_PAYMENT_METHOD", payload: paymentMethod })
             }
-            setVisible={setVisible}
+            handleClosePress={handleClosePress}
           />
         )}
       </BottomSheet>
-    </ThemedSafeAreaView>
+    </>
   );
 };
 
