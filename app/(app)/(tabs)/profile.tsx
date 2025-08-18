@@ -1,15 +1,15 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { CustomAlert } from "@/components/ui/CustomAlert";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/store/slice/userSlice";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { RelativePathString, router } from "expo-router";
 import * as SecureStore from "expo-secure-store";
-import React, { useCallback, useMemo, useRef } from "react";
+import React from "react";
 import { Image, StyleSheet, useColorScheme, View } from "react-native";
 
 type ScreenDataType = {
@@ -29,10 +29,6 @@ const Profile = () => {
   const { user } = useAppSelector((state) => state.user);
   const theme = useColorScheme() ?? "light";
 
-  // Bottom Sheet
-  const sheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => ["20%"], []);
-
   // Redux
   const dispatch = useAppDispatch();
 
@@ -49,26 +45,16 @@ const Profile = () => {
     }
   };
 
-  const handleSnapPress = useCallback(() => {
-    sheetRef.current?.snapToIndex(0);
-  }, []);
-
-  const handleClosePress = useCallback(() => {
-    sheetRef.current?.close();
-  }, []);
-
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        pressBehavior="close"
-        style={[props.style, { top: 0, height: "100%" }]}
-      />
-    ),
-    []
-  );
+  const openLogoutAlert = () => {
+    CustomAlert.alert("Logout", "Are you sure you want to logout?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Logout",
+        style: "destructive",
+        onPress: () => handleLogout(),
+      },
+    ]);
+  };
 
   return (
     <>
@@ -102,47 +88,9 @@ const Profile = () => {
               />
             </Card>
           ))}
-          <Button onPress={handleSnapPress} text="Logout" />
+          <Button onPress={openLogoutAlert} text="Logout" />
         </View>
       </ScreenWrapper>
-
-      {/* Bottom Sheet */}
-      <BottomSheet
-        ref={sheetRef}
-        index={-1}
-        enableOverDrag={false}
-        snapPoints={snapPoints}
-        enableDynamicSizing={false}
-        enablePanDownToClose
-        backdropComponent={renderBackdrop}
-        backgroundStyle={{ backgroundColor: Colors[theme].background }}
-        handleIndicatorStyle={{ backgroundColor: Colors[theme].textSecondary }}
-      >
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <ThemedText
-            type="subTitle"
-            weight="semibold"
-            style={{ textAlign: "center" }}
-          >
-            Are you sure you want to logout?
-          </ThemedText>
-          <View style={{ flexDirection: "row", gap: 26, marginTop: 20 }}>
-            <Button
-              type="secondary"
-              onPress={handleClosePress}
-              text="Cancel"
-              style={styles.buttonStyles}
-            />
-            <Button
-              onPress={handleLogout}
-              text="Logout"
-              style={styles.buttonStyles}
-            />
-          </View>
-        </View>
-      </BottomSheet>
     </>
   );
 };

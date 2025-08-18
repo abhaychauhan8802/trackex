@@ -1,21 +1,27 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import { CustomAlert } from "@/components/ui/CustomAlert";
 import Loader from "@/components/ui/Loader";
 import { ThemedText } from "@/components/ui/ThemedText";
+import axios from "@/config/axios";
 import { Constants } from "@/constants/Constants";
 import { useApi } from "@/hooks/useApi";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { formatINR } from "@/utils/formatAmount";
 import { formatDateString } from "@/utils/formatDate";
-import { useLocalSearchParams } from "expo-router";
-import React, { useCallback, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { AxiosError } from "axios";
+import { router, useLocalSearchParams } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
+import { RefreshControl, StyleSheet, Vibration, View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
 
 const TransactionDetail = () => {
   const { id } = useLocalSearchParams();
   const { request, data, error, loading } = useApi();
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const transaction = data?.transaction;
 
@@ -49,7 +55,7 @@ const TransactionDetail = () => {
 
   const renderItem = useCallback(
     ({ item }: { item: any }) => (
-      <Card style={styles.item}>
+      <Card style={[item.title === "Note" ? styles.note : styles.item]}>
         <ThemedText type="subTitle" weight="semibold">
           {item.title}
         </ThemedText>
@@ -58,6 +64,46 @@ const TransactionDetail = () => {
     ),
     []
   );
+
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`/transaction/${id}`);
+      const data = res?.data;
+
+      if (data?.success) {
+        Toast.show({
+          type: "success",
+          text1: data?.message,
+        });
+
+        router.back();
+      }
+    } catch (error: AxiosError | any) {
+      console.log(error?.response?.data);
+      Toast.show({
+        type: "error",
+        text1: error?.response?.data?.message,
+      });
+    }
+  };
+
+  const handleDeleteAlert = () => {
+    CustomAlert.alert("Delete transaction?", "This action cannot be undone.", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: () => handleDelete(),
+      },
+    ]);
+  };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    await request("post", `/transaction/${id}`);
+    setRefreshing(false);
+  }, []);
 
   useEffect(() => {
     request("post", `/transaction/${id}`);
@@ -70,6 +116,15 @@ const TransactionDetail = () => {
       headerTitle="Transaction"
       headerShowBackButton
       edges={["top", "bottom"]}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            Vibration.vibrate(100);
+            onRefresh();
+          }}
+        />
+      }
     >
       {loading ? (
         <View
@@ -112,11 +167,21 @@ const TransactionDetail = () => {
           </View>
 
           <View>
-            <Button text="Edit Transaction" style={styles.button} />
+            <Button
+              text="Edit Transaction"
+              style={styles.button}
+              onPress={() =>
+                router.push({
+                  pathname: "/(app)/transaction-form",
+                  params: transaction,
+                })
+              }
+            />
             <Button
               type="secondary"
               text="Delete Transaction"
               style={styles.button}
+              onPress={handleDeleteAlert}
             />
           </View>
         </View>
@@ -129,10 +194,13 @@ export default TransactionDetail;
 
 const styles = StyleSheet.create({
   card: {
-    marginTop: 50,
+    marginTop: 40,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: Constants.borderRadius,
+  },
+  note: {
+    height: 120,
   },
   details: {
     marginTop: 50,

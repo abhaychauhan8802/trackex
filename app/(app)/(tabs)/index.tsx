@@ -7,15 +7,24 @@ import axios from "@/config/axios";
 import { timePeriod } from "@/utils/timePeriod";
 import { AxiosError } from "axios";
 import { Link } from "expo-router";
-import { useEffect, useState } from "react";
-import { TouchableOpacity, useColorScheme, View } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import {
+  RefreshControl,
+  TouchableOpacity,
+  useColorScheme,
+  Vibration,
+  View,
+} from "react-native";
 import Toast from "react-native-toast-message";
 
 export default function HomeScreen() {
-  const { currentMonth } = timePeriod;
+  // States
   const [transactions, setTransactions] = useState<any>();
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
   const theme = useColorScheme() ?? "light";
+  const { currentMonth } = timePeriod;
 
   const getTransactions = async () => {
     setLoading(true);
@@ -37,12 +46,31 @@ export default function HomeScreen() {
     }
   };
 
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+
+    await getTransactions();
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     getTransactions();
   }, []);
 
   return (
-    <ScreenWrapper headerTitle="Trackex" headerTitleStyle={{ fontSize: 26 }}>
+    <ScreenWrapper
+      headerTitle="Trackex"
+      headerTitleStyle={{ fontSize: 26 }}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => {
+            Vibration.vibrate(100);
+            onRefresh();
+          }}
+        />
+      }
+    >
       <DebitCard
         totalIncome={transactions?.totalIncome ?? 0}
         totalExpense={transactions?.totalExpense ?? 0}

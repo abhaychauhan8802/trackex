@@ -2,21 +2,30 @@ import { Colors } from "@/constants/Colors";
 import { formatDateString } from "@/utils/formatDate";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import Card from "../ui/Card";
 import RoundIcon from "../ui/RoundIcon";
 import { ThemedText } from "../ui/ThemedText";
 
-const TransactionDatePicker = ({ theme }: { theme: "light" | "dark" }) => {
-  const [date, setDate] = useState(new Date());
+const TransactionDatePicker = ({
+  theme,
+  formDate,
+  onDateChange,
+}: {
+  theme: "light" | "dark";
+  formDate: Date;
+  onDateChange: (date: Date) => void;
+}) => {
+  const [date, setDate] = useState(formDate);
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
-  const onChange = (event: any, selectedDate: any) => {
+  const onChange = (_: any, selectedDate: any) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
+    onDateChange(currentDate);
   };
 
   const showMode = (currentMode: any) => {
@@ -27,6 +36,10 @@ const TransactionDatePicker = ({ theme }: { theme: "light" | "dark" }) => {
   const showDatepicker = () => {
     showMode("date");
   };
+
+  useEffect(() => {
+    setDate(formDate);
+  }, [formDate]);
 
   return (
     <>

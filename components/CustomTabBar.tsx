@@ -45,7 +45,7 @@ export const CustomTabBar = ({
                 key={"add-button"}
                 activeOpacity={0.5}
                 accessibilityRole="button"
-                onPress={() => router.push("/add-transaction")}
+                onPress={() => router.push("/transaction-form")}
                 style={styles.addButton}
               >
                 {/* <Image

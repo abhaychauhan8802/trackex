@@ -1,5 +1,6 @@
-import React from "react";
+import React, { ReactElement } from "react";
 import {
+  RefreshControlProps,
   ScrollView,
   StyleSheet,
   TextStyle,
@@ -17,6 +18,7 @@ type ScreenWrapperProps = {
   headerStyle?: ViewStyle;
   headerShowBackButton?: boolean;
   containerStyle?: ViewStyle;
+  refreshControl?: ReactElement<RefreshControlProps>;
 };
 
 const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
@@ -27,6 +29,7 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
   headerStyle,
   headerShowBackButton,
   containerStyle,
+  refreshControl,
 }) => {
   return (
     <ThemedSafeAreaView edges={edges}>
@@ -36,7 +39,10 @@ const ScreenWrapper: React.FC<ScreenWrapperProps> = ({
         headerStyle={headerStyle}
         showBack={headerShowBackButton}
       />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView
+        contentContainerStyle={styles.scrollViewContent}
+        refreshControl={refreshControl}
+      >
         <View style={[styles.contentContainer, containerStyle]}>
           {children}
         </View>

@@ -5,7 +5,7 @@ export const Colors = {
     primary: "#8b5cf6",
     primaryFade: "#8a5cf69a",
     onPrimary: "#FFFFFF",
-    secondary: "#e7e5e4",
+    secondary: "#f1f5f9",
     onSecondary: "#1e293b",
     textPrimary: "#161d2c",
     textSecondary: "#818fa4",

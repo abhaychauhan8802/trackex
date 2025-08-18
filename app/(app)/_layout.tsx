@@ -2,6 +2,7 @@ import { Redirect, Stack } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import "react-native-reanimated";
 
+import CustomAlertComponent, { CustomAlert } from "@/components/ui/CustomAlert";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { saveUser } from "@/store/slice/userSlice";
 import { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ export default function StackLayout() {
           animation: "ios_from_right",
         }}
       />
+      <CustomAlertComponent ref={CustomAlert.setRef} />
     </>
   );
 }
