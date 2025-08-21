@@ -1,50 +1,66 @@
-# Welcome to your Expo app 👋
+![Trackex Banner](./assets/readme/trackex.png)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# 📊 Trackex
 
-## Get started
+**Trackex** is a full-featured **expense tracking mobile app** that helps users manage their daily **expenses and incomes**. It provides a clean interface to record, categorize, and analyze financial activities, making it easier to stay on top of personal budgeting.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- 📌 Add, edit, and delete **income & expense entries**
+- 📂 Categorize transactions (e.g., Food, Travel, Bills, Salary, etc.)
+- 📊 Track daily, weekly, and monthly spending patterns
+- 🔐 Secure **authentication & data storage**
+- 🌙 Modern and responsive UI with support for smooth gestures & bottom sheets
+- ☁️ **Backend with Express + PostgreSQL** for persistent data storage
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🛠️ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+### Frontend (Mobile)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **React Native** (with **Expo**)
+- **Redux** (state management)
+- **UI Libraries**: Bottom Sheet, Gesture Handler, etc.
 
-## Get a fresh project
+### Backend
 
-When you're ready, run:
+- **Express.js** (REST API)
+- **PostgreSQL** (database)
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (>= 20)
+- Expo CLI
+- PostgreSQL database
+
+### Clone the repo
 
 ```bash
-npm run reset-project
+git clone https://github.com/abhaychauhan8802/trackex-frontend.git
+cd trackex-frontend
+npm install
+npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## ⚙️ Environment Variables
 
-## Learn more
+You will need to configure `.env` file for app to run
 
-To learn more about developing your project with Expo, look at the following resources:
+### (`.env`)
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+EXPO_PUBLIC_API_URL=http://localhost:3000
+```
 
-## Join the community
+### Backend repo
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+git clone https://github.com/abhaychauhan8802/trackex-backend.git
+```

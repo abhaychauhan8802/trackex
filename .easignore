@@ -1,0 +1,3 @@
+# Ignore native folders
+android/
+ios/
