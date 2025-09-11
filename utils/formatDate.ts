@@ -1,4 +1,6 @@
-export const formatDate = (date: Date) => date.toLocaleDateString("en-CA");
+import { format } from "date-fns";
+
+// export const formatDate = (date: Date) => date.toLocaleDateString("en-CA");
 
 export const formatDateString = (dateString: string) => {
   const date = new Date(dateString);
@@ -11,4 +13,8 @@ export const formatDateString = (dateString: string) => {
     })
     .toUpperCase()
     .replace(/,/g, "");
+};
+
+export const formatDate = (date: Date) => {
+  return format(date, "yyyy-MM-dd");
 };

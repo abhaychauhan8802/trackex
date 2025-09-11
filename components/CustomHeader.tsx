@@ -3,7 +3,6 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleProp,
-  StyleSheet,
   TextStyle,
   TouchableOpacity,
   ViewStyle,
@@ -62,5 +61,3 @@ const CustomHeader = ({
 };
 
 export default CustomHeader;
-
-const styles = StyleSheet.create({});

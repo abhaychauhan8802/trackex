@@ -45,14 +45,9 @@ export const CustomTabBar = ({
                 key={"add-button"}
                 activeOpacity={0.5}
                 accessibilityRole="button"
-                onPress={() => router.push("/transaction-form")}
+                onPress={() => router.push("/add-transaction")}
                 style={styles.addButton}
               >
-                {/* <Image
-                  source={require("../assets/icons/plus.png")}
-                  tintColor={Colors[theme].icon}
-                  style={{ height: 22, width: 22 }}
-                /> */}
                 <MaterialIcons name="add" size={22} color={"#fff"} />
               </TouchableOpacity>
               <TouchableOpacity

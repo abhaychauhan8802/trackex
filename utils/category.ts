@@ -53,8 +53,11 @@ const expenseCategories: { [key: string]: { icon: any } } = {
   insurance: {
     icon: require("../assets/icons/insurance.png"),
   },
-  "gift and donation": {
+  gift: {
     icon: require("../assets/icons/gift.png"),
+  },
+  donation: {
+    icon: require("../assets/icons/donation.png"),
   },
 };
 

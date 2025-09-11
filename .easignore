@@ -1,3 +1,5 @@
 # Ignore native folders
 android/
 ios/
+
+assets/readme

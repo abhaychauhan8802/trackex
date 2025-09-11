@@ -52,7 +52,7 @@ const BottomSheet = ({
         if (finished) runOnJS(setShow)(false);
       });
     }
-  }, [visible]);
+  }, [height, translateY, visible]);
 
   useEffect(() => {
     const onBackPress = () => {

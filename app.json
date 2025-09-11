@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "trackexfrontend",
+    "scheme": "trackex",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -48,6 +48,22 @@
         }
       ],
       [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
+          }
+        }
+      ],
+      [
         "@react-native-community/datetimepicker",
         {
           "android": {
@@ -71,7 +87,10 @@
             }
           },
           "timePicker": {
-            "background": { "light": "#f9fafb", "dark": "#0F172A" }
+            "background": {
+              "light": "#f9fafb",
+              "dark": "#0F172A"
+            }
           }
         }
       ]

@@ -1,39 +1,37 @@
+import {
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from "date-fns";
 import { formatDate } from "./formatDate";
+
+export type TimeType = {
+  start: string;
+  end: string;
+};
+
+export type TimePeriodType = {
+  currentWeek: TimeType;
+  currentMonth: TimeType;
+  currentYear: TimeType;
+};
 
 const now = new Date();
 
-export type Time = {
-  startDate: string;
-  endDate: string;
-};
-
-type TimePeriod = {
-  currentWeek: Time;
-  currentMonth: Time;
-  currentYear: Time;
-};
-
-export const timePeriod: TimePeriod = {
+export const timePeriod: TimePeriodType = {
   currentWeek: {
-    startDate: (() => {
-      const date = new Date(now);
-      const day = date.getDay();
-      const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-      return formatDate(new Date(date.setDate(diff)));
-    })(),
-    endDate: (() => {
-      const date = new Date(now);
-      const day = date.getDay();
-      const diff = date.getDate() - day + (day === 0 ? 0 : 7);
-      return formatDate(new Date(date.setDate(diff)));
-    })(),
+    start: formatDate(startOfWeek(now, { weekStartsOn: 1 })),
+    end: formatDate(endOfWeek(now, { weekStartsOn: 1 })),
   },
   currentMonth: {
-    startDate: formatDate(new Date(now.getFullYear(), now.getMonth(), 1)),
-    endDate: formatDate(new Date(now.getFullYear(), now.getMonth() + 1, 0)),
+    start: formatDate(startOfMonth(now)),
+    end: formatDate(endOfMonth(now)),
   },
   currentYear: {
-    startDate: formatDate(new Date(now.getFullYear(), 0, 1)),
-    endDate: formatDate(new Date(now.getFullYear(), 11, 31)),
+    start: formatDate(startOfYear(now)),
+    end: formatDate(endOfYear(now)),
   },
 };

@@ -2,13 +2,10 @@ import ScreenWrapper from "@/components/ScreenWrapper";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import { ThemedText } from "@/components/ui/ThemedText";
-import { useAppSelector } from "@/store/hooks";
 import React, { useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 const AccountInfo = () => {
-  const { user } = useAppSelector((state) => state.user);
-
   const [editable, setEditable] = useState(false);
 
   return (
@@ -27,13 +24,13 @@ const AccountInfo = () => {
           <ThemedText type="label" weight="bold" style={styles.label}>
             Name
           </ThemedText>
-          <Input value={user?.name} editable={editable} />
+          <Input value="dummy" editable={editable} />
         </View>
         <View>
           <ThemedText type="label" weight="bold" style={styles.label}>
             Email
           </ThemedText>
-          <Input value={user?.email} editable={editable} />
+          <Input value="dummy" editable={editable} />
         </View>
         {editable ? (
           <Button text="Update Profile" onPress={() => setEditable(false)} />

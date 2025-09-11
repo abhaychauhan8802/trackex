@@ -46,7 +46,7 @@ const TabsSwitcher = <T extends string>({
       options.findIndex((opt) => opt.key === selected) * tabWidth,
       { duration: 200 }
     );
-  }, [selected]);
+  }, [options, selected, tabWidth, translateX]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: translateX.value }],
