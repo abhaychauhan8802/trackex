@@ -1,23 +1,16 @@
+import { ThemedText } from "@/components/ui/ThemedText";
 import { Colors } from "@/constants/Colors";
 import { formatINR } from "@/utils/formatAmount";
 import { useColorScheme, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
-import { ThemedText } from "../ui/ThemedText";
-
-export type ChartData = {
-  label: string;
-  value: number;
-  color: string;
-  text: string;
-  focused?: boolean;
-};
+import { type ChartDataType } from "../";
 
 const TransactionChart = ({
   chartData,
   total,
   current,
 }: {
-  chartData: ChartData[];
+  chartData: ChartDataType[];
   total: number;
   current?: "expense" | "income";
 }) => {

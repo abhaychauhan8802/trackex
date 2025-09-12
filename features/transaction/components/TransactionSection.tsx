@@ -5,11 +5,9 @@ import { TransactionItem } from "./";
 export default function TransactionSection({
   transactions,
   theme,
-  selectedTab,
 }: {
   transactions: any[];
   theme: "light" | "dark";
-  selectedTab?: "week" | "month" | "year";
 }) {
   return (
     <>
@@ -25,7 +23,11 @@ export default function TransactionSection({
         </View>
       ) : (
         <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+          style={{
+            height: "50%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
           <ThemedText
             type="body"
@@ -36,7 +38,7 @@ export default function TransactionSection({
               paddingTop: 12,
             }}
           >
-            No transactions found for this {selectedTab ? selectedTab : "month"}
+            You don’t have any transactions yet
           </ThemedText>
         </View>
       )}

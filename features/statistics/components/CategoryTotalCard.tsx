@@ -1,18 +1,18 @@
+import Card from "@/components/ui/Card";
+import RoundIcon from "@/components/ui/RoundIcon";
+import { ThemedText } from "@/components/ui/ThemedText";
 import { capitalizeFirstLetter } from "@/utils/capitalizeFirstLetter";
 import { expenseCategories, incomeCategories } from "@/utils/category";
 import { formatINR } from "@/utils/formatAmount";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import Card from "../ui/Card";
-import RoundIcon from "../ui/RoundIcon";
-import { ThemedText } from "../ui/ThemedText";
-import { ChartData } from "./TransactionChart";
+import { type ChartDataType } from "../";
 
 const CategoryTotalCard = ({
   categoryTotal,
   selectedTab,
 }: {
-  categoryTotal: ChartData[];
+  categoryTotal: ChartDataType[];
   selectedTab: "expense" | "income";
 }) => {
   const categoryImage =
@@ -59,9 +59,12 @@ const CategoryTotalCard = ({
               </View>
               <ThemedText
                 color={selectedTab === "expense" ? "error" : "success"}
-              >{`${selectedTab === "expense" ? "- " : "+ "}${formatINR(
-                Number(item.value)
-              )}`}</ThemedText>
+                weight="semibold"
+              >
+                {`${selectedTab === "expense" ? "- " : "+ "}${formatINR(
+                  Number(item.value)
+                )}`}
+              </ThemedText>
             </Card>
           );
         })}

@@ -3,7 +3,6 @@ import Card from "@/components/ui/Card";
 import { ThemedText } from "@/components/ui/ThemedText";
 import { Colors } from "@/constants/Colors";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { RelativePathString, router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, useColorScheme, View } from "react-native";
 
@@ -19,12 +18,12 @@ const screensData: ScreenDataType[] = [
   },
 ];
 
-const Profile = () => {
+const Settings = () => {
   const theme = useColorScheme() ?? "light";
 
   return (
     <>
-      <ScreenWrapper headerTitle="Profile" headerTitleStyle={{ fontSize: 26 }}>
+      <ScreenWrapper headerTitle="Settings" headerTitleStyle={{ fontSize: 26 }}>
         <Image
           source={require("../../../assets/images/profile.png")}
           style={styles.img}
@@ -42,7 +41,7 @@ const Profile = () => {
                 alignItems: "center",
                 justifyContent: "space-between",
               }}
-              onPress={() => router.push(item.route as RelativePathString)}
+              // onPress={() => router.push(item.route as RelativePathString)}
             >
               <ThemedText type="subTitle" weight="semibold">
                 {item.name}
@@ -60,7 +59,7 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Settings;
 
 const styles = StyleSheet.create({
   text: {

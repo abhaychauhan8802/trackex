@@ -22,13 +22,10 @@ const TransactionOverview = () => {
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            marginBottom: 12,
           }}
         >
-          <ThemedText
-            type="sectionHeading"
-            weight="semibold"
-            style={{ marginBottom: 6 }}
-          >
+          <ThemedText type="sectionHeading" weight="semibold">
             Recent activity
           </ThemedText>
           <Link href="/(app)/(tabs)/transactions" asChild>

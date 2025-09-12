@@ -1,14 +1,12 @@
-import { Colors } from "@/constants/Colors";
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { useCallback } from "react";
-import { useColorScheme } from "react-native";
+import BottomSheet from "@/components/BottomSheet";
+import { BottomSheetMethods } from "@gorhom/bottom-sheet/lib/typescript/types";
 import { CategoriesResultType } from "../services";
 import { TransactionFormAction } from "../types";
 import CategorySelector from "./CategorySelector";
 import PaymentMethodSelector from "./PaymentMethodSelector";
 
 type TransactionSheetProps = {
-  sheetRef: React.RefObject<BottomSheet>;
+  sheetRef: React.RefObject<BottomSheetMethods>;
   snapPoints: string[];
   handleSheetChange: (index: number) => void;
   bottomSheetType: "category" | "payment" | null;
@@ -28,33 +26,11 @@ const TransactionSheet = ({
   selectedTab,
   categories,
 }: TransactionSheetProps) => {
-  const theme = useColorScheme() ?? "light";
-
-  const renderBackdrop = useCallback(
-    (props: any) => (
-      <BottomSheetBackdrop
-        {...props}
-        appearsOnIndex={0}
-        disappearsOnIndex={-1}
-        pressBehavior="close"
-        style={[props.style, { top: 0, height: "100%" }]}
-      />
-    ),
-    []
-  );
-
   return (
     <BottomSheet
-      ref={sheetRef}
-      index={-1}
-      enableOverDrag={false}
+      sheetRef={sheetRef}
       snapPoints={snapPoints}
-      enableDynamicSizing={false}
-      enablePanDownToClose
-      backdropComponent={renderBackdrop}
-      onChange={handleSheetChange}
-      backgroundStyle={{ backgroundColor: Colors[theme].background }}
-      handleIndicatorStyle={{ backgroundColor: Colors[theme].textSecondary }}
+      handleSheetChange={handleSheetChange}
     >
       {bottomSheetType === "category" && (
         <CategorySelector
