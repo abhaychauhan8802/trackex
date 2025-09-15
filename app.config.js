@@ -1,0 +1,110 @@
+const IS_DEV = process.env.APP_VARIANT === "development";
+
+export default {
+  name: IS_DEV ? "Trackex (Dev)" : "Trackex",
+  slug: "trackex",
+  version: "1.0.0",
+  orientation: "portrait",
+  icon: "./assets/images/icon.png",
+  scheme: "trackex",
+  userInterfaceStyle: "automatic",
+  newArchEnabled: true,
+  ios: {
+    supportsTablet: true,
+  },
+  android: {
+    adaptiveIcon: {
+      foregroundImage: "./assets/images/adaptive-icon.png",
+      backgroundColor: "#ffffff",
+    },
+    edgeToEdgeEnabled: true,
+    package: IS_DEV ? "com.trackex.dev" : "com.trackex",
+    softwareKeyboardLayoutMode: "resize",
+  },
+  web: {
+    bundler: "metro",
+    output: "static",
+    favicon: "./assets/images/favicon.png",
+  },
+  plugins: [
+    "expo-router",
+    [
+      "expo-splash-screen",
+      {
+        image: "./assets/images/splash-icon.png",
+        imageWidth: 200,
+        resizeMode: "contain",
+        backgroundColor: "#f9fafb",
+        dark: {
+          image: "./assets/images/splash-icon.png",
+          backgroundColor: "#0F172A",
+        },
+      },
+    ],
+    [
+      "expo-secure-store",
+      {
+        configureAndroidBackup: true,
+        faceIDPermission:
+          "Allow $(PRODUCT_NAME) to access your Face ID biometric data.",
+      },
+    ],
+    [
+      "expo-sqlite",
+      {
+        enableFTS: true,
+        useSQLCipher: true,
+        android: {
+          enableFTS: false,
+          useSQLCipher: false,
+        },
+        ios: {
+          customBuildFlags: [
+            "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1",
+          ],
+        },
+      },
+    ],
+    [
+      "@react-native-community/datetimepicker",
+      {
+        android: {
+          datePicker: {
+            colorAccent: {
+              light: "#8b5cf6",
+              dark: "#9b74f6",
+            },
+            windowBackground: {
+              light: "#f9fafb",
+              dark: "#0F172A",
+            },
+            textColorPrimary: {
+              light: "#161d2c",
+              dark: "#f1f5f9",
+            },
+            textColorSecondary: {
+              light: "#818fa4",
+              dark: "#cdd5df",
+            },
+          },
+        },
+        timePicker: {
+          background: {
+            light: "#f9fafb",
+            dark: "#0F172A",
+          },
+        },
+      },
+    ],
+  ],
+  experiments: {
+    typedRoutes: true,
+  },
+  extra: {
+    router: {},
+    eas: {
+      projectId: "46e8b2f5-9ed9-4692-8841-52157b4417fb",
+    },
+  },
+  owner: "coder8802",
+};
