@@ -1,6 +1,5 @@
 import { timePeriod, TimeType } from "@/utils/timePeriod";
 import { useEffect, useMemo, useState } from "react";
-import { CategoryTotalType } from "../";
 import { getCategoryTotal } from "../services/statisticsService";
 
 export function useStatistics() {

@@ -1,5 +1,4 @@
 import db from "@/config/database";
-import { CategoryType } from "../types";
 
 export type CategoriesResultType = {
   expenseCategories: CategoryType[];

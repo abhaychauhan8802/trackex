@@ -24,18 +24,6 @@ const AllTransactions = () => {
           { key: "year", label: "Year" },
         ]}
       />
-      {/* <View style={styles.balanceCardContainer}>
-        <BalanceCard
-          title="Income"
-          value={allTransactions?.totalIncome ?? 0}
-          color={Colors[theme].success}
-        />
-        <BalanceCard
-          title="Expense"
-          value={allTransactions?.totalExpense ?? 0}
-          color={Colors[theme].error}
-        />
-      </View> */}
       <ThemedText
         style={{ marginBottom: 8 }}
         type="sectionHeading"
@@ -43,11 +31,7 @@ const AllTransactions = () => {
       >
         Transactions
       </ThemedText>
-      <TransactionsSection
-        transactions={allTransactions ?? []}
-        theme={theme}
-        selectedTab={selectedTab}
-      />
+      <TransactionsSection transactions={allTransactions ?? []} theme={theme} />
     </ScreenWrapper>
   );
 };

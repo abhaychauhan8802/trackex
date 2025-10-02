@@ -1,7 +1,6 @@
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { getTransactionById } from "../";
-import { TransactionType } from "../types";
 
 export const useTransactionDetail = (id: string) => {
   const [transaction, setTransaction] = useState<TransactionType>();

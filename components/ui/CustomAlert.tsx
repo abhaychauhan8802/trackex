@@ -51,6 +51,8 @@ const CustomAlertComponent = forwardRef((_, ref) => {
     btn.onPress?.();
   };
 
+  CustomAlertComponent.displayName = "CustomAlertComponent";
+
   return (
     <Modal
       transparent
@@ -61,13 +63,15 @@ const CustomAlertComponent = forwardRef((_, ref) => {
     >
       <Pressable style={styles.backdrop} onPress={handleClose}>
         <Pressable style={styles.dialog}>
-          {/* Title */}
-          <Text style={styles.title}>{options?.title}</Text>
+          <View style={{ paddingHorizontal: 20 }}>
+            {/* Title */}
+            <Text style={styles.title}>{options?.title}</Text>
 
-          {/* Message */}
-          {options?.message && (
-            <Text style={styles.message}>{options.message}</Text>
-          )}
+            {/* Message */}
+            {options?.message && (
+              <Text style={styles.message}>{options.message}</Text>
+            )}
+          </View>
 
           {/* Buttons */}
           <View style={styles.actions}>
@@ -128,7 +132,7 @@ const useStyles = (theme: "light" | "dark") =>
       width: 312,
       backgroundColor: Colors[theme].surface,
       borderRadius: 28,
-      padding: 24,
+      paddingTop: 24,
       elevation: 6,
       shadowColor: "#000",
       shadowOpacity: 0.3,
@@ -139,26 +143,30 @@ const useStyles = (theme: "light" | "dark") =>
       fontSize: 22,
       fontWeight: "600",
       color: Colors[theme].textPrimary,
-      marginBottom: 16,
+      marginBottom: 10,
+      textAlign: "center",
     },
     message: {
       fontSize: 16,
       color: Colors[theme].textSecondary,
-      marginBottom: 24,
+      marginBottom: 30,
+      textAlign: "center",
     },
     actions: {
-      flexDirection: "row",
-      justifyContent: "flex-end",
+      flexDirection: "column",
     },
     button: {
       paddingHorizontal: 12,
-      paddingVertical: 8,
+      paddingVertical: 19,
       borderRadius: 8,
-      marginLeft: 8,
+      width: "100%",
+      borderTopWidth: 1,
+      borderTopColor: Colors[theme].border,
     },
     buttonText: {
       fontSize: 14,
       fontWeight: "600",
       textTransform: "uppercase",
+      textAlign: "center",
     },
   });

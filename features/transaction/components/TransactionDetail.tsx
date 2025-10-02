@@ -67,14 +67,18 @@ const TransactionDetail = () => {
   };
 
   const handleDeleteAlert = () => {
-    CustomAlert.alert("Delete transaction?", "This action cannot be undone.", [
-      { text: "Cancel", style: "cancel" },
-      {
-        text: "Delete",
-        style: "destructive",
-        onPress: () => handleDelete(),
-      },
-    ]);
+    CustomAlert.alert(
+      "Delete transaction?",
+      "Are you sure you want to delete this transaction?",
+      [
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: () => handleDelete(),
+        },
+        { text: "Cancel", style: "cancel" },
+      ]
+    );
   };
 
   return (

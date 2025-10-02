@@ -6,7 +6,7 @@ export default function TransactionSection({
   transactions,
   theme,
 }: {
-  transactions: any[];
+  transactions: TransactionType[];
   theme: "light" | "dark";
 }) {
   return (

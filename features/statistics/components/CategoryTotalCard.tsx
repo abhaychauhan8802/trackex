@@ -6,7 +6,6 @@ import { expenseCategories, incomeCategories } from "@/utils/category";
 import { formatINR } from "@/utils/formatAmount";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
-import { type ChartDataType } from "../";
 
 const CategoryTotalCard = ({
   categoryTotal,

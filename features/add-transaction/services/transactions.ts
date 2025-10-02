@@ -1,6 +1,5 @@
 import db from "@/config/database";
 import { formatDate } from "@/utils/formatDate";
-import { TransactionFormState } from "../types";
 
 export const addTransaction = async (data: TransactionFormState) => {
   const { amount, category, note, paymentMethod, date } = data;

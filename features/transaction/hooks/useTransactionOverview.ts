@@ -2,7 +2,6 @@ import { timePeriod } from "@/utils/timePeriod";
 import { useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { getAllTransactions, getTotalAmount } from "../services";
-import { TotalAmountsType, TransactionType } from "../types";
 
 export function useTransactionOverview() {
   const [transactions, setTransactions] = useState<TransactionType[]>([]);

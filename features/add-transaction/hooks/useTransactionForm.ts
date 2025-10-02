@@ -10,7 +10,6 @@ import {
   editTransaction,
   getCategories,
 } from "../services";
-import { TransactionFormAction, TransactionFormState } from "../types";
 
 const initialState: TransactionFormState = {
   amount: null,

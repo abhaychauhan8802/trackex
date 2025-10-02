@@ -3,7 +3,6 @@ import { Colors } from "@/constants/Colors";
 import { formatINR } from "@/utils/formatAmount";
 import { useColorScheme, View } from "react-native";
 import { PieChart } from "react-native-gifted-charts";
-import { type ChartDataType } from "../";
 
 const TransactionChart = ({
   chartData,

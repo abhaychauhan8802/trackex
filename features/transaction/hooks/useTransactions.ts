@@ -2,7 +2,6 @@ import { timePeriod, TimeType } from "@/utils/timePeriod";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback, useState } from "react";
 import { getAllTransactions } from "../services";
-import { TransactionType } from "../types";
 
 export function useTransactions() {
   const { currentMonth, currentWeek, currentYear } = timePeriod;
