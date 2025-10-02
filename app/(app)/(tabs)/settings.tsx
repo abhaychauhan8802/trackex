@@ -1,26 +1,20 @@
 import ScreenWrapper from "@/components/ScreenWrapper";
-import Card from "@/components/ui/Card";
-import { ThemedText } from "@/components/ui/ThemedText";
-import { Colors } from "@/constants/Colors";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import React from "react";
-import { Image, StyleSheet, useColorScheme, View } from "react-native";
+import { Image, StyleSheet } from "react-native";
 
-type ScreenDataType = {
-  name: string;
-  route: string;
-};
+// type ScreenDataType = {
+//   name: string;
+//   route: string;
+// };
 
-const screensData: ScreenDataType[] = [
-  {
-    name: "Account Info",
-    route: "/(app)/(profile)/account-info",
-  },
-];
+// const screensData: ScreenDataType[] = [
+//   {
+//     name: "Account Info",
+//     route: "/(app)/(profile)/account-info",
+//   },
+// ];
 
 const Settings = () => {
-  const theme = useColorScheme() ?? "light";
-
   return (
     <>
       <ScreenWrapper headerTitle="Settings" headerTitleStyle={{ fontSize: 26 }}>
@@ -28,11 +22,11 @@ const Settings = () => {
           source={require("../../../assets/images/profile.png")}
           style={styles.img}
         />
-        <ThemedText style={[styles.text]} type="title" weight="semibold">
+        {/* <ThemedText style={[styles.text]} type="title" weight="semibold">
           Abhay
-        </ThemedText>
+        </ThemedText> */}
 
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           {screensData.map((item) => (
             <Card
               key={item.name}
@@ -53,7 +47,7 @@ const Settings = () => {
               />
             </Card>
           ))}
-        </View>
+        </View> */}
       </ScreenWrapper>
     </>
   );
